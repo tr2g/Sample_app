@@ -1,12 +1,30 @@
 <h1>新規投稿</h1>
+<% if @list.errors.any? %>
+<!--errors＝モデルにバリデーションを掛けたときに発生したエラーの内容を確認できるメソッド。any?と組み合わせることでエラーが発生しているかどうか判定できる。-->
+  <%= @list.errors.count %>件のエラーが発生しました。
+  <ul>
+    <% @list.errors.full_messages.each do |message| %>
+    <!--full_massege＝エラーの内容を出力できる-->
+    <!--eachを使うのは、エラーが配列で保存されているから-->
+    <li> <%= message %> </li>
+    <% end %>
+  </ul>
+  <% end %>
+
 <!-- ↓form_with部分 -->
-<%= form_with model: @list do |f| %>
+<%= form_with model: @list do |f| %> <!--fにはListモデルの情報も入っている-->
   <h4>タイトル</h4>
   <%= f.text_field :title %>
 
   <h4>本文</h4>
   <%= f.text_area :body %>
 
-  <%= f.submit '投稿' %>
-<% end %>
+  <h4>画像</h4>
+  <%= f.file_field :image,accept: "image/*" %>
+  <!--file_field＝読んで字のごとくファイルを投稿するためのフィールドなので、画像以外に動画や音声も投稿できてしまう。
+  そこでaccept:"/image/*"を使うことで画像ファイルしか投稿できないようにしている-->
 
+  <%= f.submit '投稿' %>
+  <!--～fieldと～areaと～submitは部品を作成するためのヘルパー。モデルオブジェクトと呼ぶ。-->
+
+<% end %>

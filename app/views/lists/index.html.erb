@@ -1,9 +1,18 @@
-<h1>投稿一覧</h1>
-
+<div class="list-wrap">
 <% @lists.each do |list| %>
-
-
-  <p>タイトル</p>
-  <span><% list.title %></span>
-
+  <div class="list-box">
+    <% if list.image.attached? %>
+    <!--list.imageに対して.attached?メソッド（imageが存在するか確認する）を呼び出している。-->
+    <!--attached?は、画像が存在すればtrue、存在しなければfalseを返す。→falseでelseの結果を表示する。-->
+      <%= image_tag list.image, size:"200x200" %>
+    <%else %>
+      <%= image_tag 'no_image',size: "200x200" %>
+       <!--image_tag＝HTMLのimgタグを生成するヘルパー。-->
+    <% end %>
+    <div class="list-comment">
+      <span class="list-body"><%= list.body %></span> <!--spanの間のやつはListモデルのbodyカラムに入っているデータを呼び出している-->
+      <span class="list-title"><%= link_to list.title, list_path(list.id) %></span> <!--link_to=リンクを設定するメソッド｜list.title=表示させるテキスト｜"/lists/#{list.id}=リンク先URL"-->
+    </div>
+  </div>
 <% end %>
+</div>
